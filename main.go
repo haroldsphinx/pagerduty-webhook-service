@@ -8,7 +8,7 @@ import (
 	"strings"
 	"os"
 	"fmt"
-	webhook "github.com/pagerduty-webhook-service/listeners"
+	webhook "github.com/pagerduty-webhook-service/listener"
 )
 
 var (
