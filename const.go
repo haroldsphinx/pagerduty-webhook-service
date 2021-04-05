@@ -1,6 +1,4 @@
-package providers
-
-
+package webhook
 
 const (
 	IncidentTrigger       = "incident.trigger"       // IncidentTrigger is sent when an incident is newly created/triggered
@@ -12,21 +10,3 @@ const (
 	IncidentDelegate      = "incident.delegate"      // IncidentDelegate is sent when an incident has been reassigned to another escalation policy
 	IncidentAnnotate      = "incident.annotate"      // IncidentAnnotate is sent when a note is created on an incident.
 )
-
-type Event string
-
-type Provider interface {
-	GetHeaderKeys() []string
-	Validate(hook Hook) bool
-	GetProviderName() string
-}
-
-type Hook struct {
-	Payload []byte
-	Headers map[string]string
-	RequestMethod string
-}  
-
-func assertProviderImplementations() {
-	var _ Provider = (*PagerDutyProvider)(nil)
-}

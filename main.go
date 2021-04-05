@@ -8,7 +8,7 @@ import (
 	"strings"
 	"os"
 	"fmt"
-	webhook "github.com/pagerduty-webhook-service/listener"
+	webhook "github.com/haroldsphinx/pagerduty-webhook-service"
 )
 
 var (
@@ -21,8 +21,8 @@ var (
 
 func validateRequiredFlags() {
 	isValid := true
-	if len(strings.TrimSpace(*provider)) == 0 {
-		log.Println("Required flag 'provider' not specified")
+	if len(strings.TrimSpace(*listenAddress)) == 0 {
+		log.Println("Required flag 'listen address' not specified")
 		isValid = false
 	}
 
@@ -47,25 +47,21 @@ func incidentHandler() http.HandlerFunc {
 }
 
 
+
 func main() {
 	flagSet.Parse(os.Args[1:])
 	validateRequiredFlags()
-	lowerProvider := strings.ToLower(*provider)
 
-	//split , into an array
-	allowedPathsArray := []string{}
-	if len(*allowedPaths) > 0 {
-		allowedPathsArray = strings.Split(*allowedPaths, ",")
+	if len(strings.TrimSpace(listenAddress)) == 0 {
+		panic("Cannot create Proxy with empty listenaddress")
 	}
 
-	log.Printf("Dapperlabs Webhook Service Started")
-	p, err := proxy.NewProxy(*upstreamURL, allowedPathsArray, lowerProvider, *secret, ignoredUsersArray)
-	if err != nil {
-		log.Fatal(err)
-	}
+	router := httprouter.New()
 
+	log.Printf("Dapperlabs Webhook Service Started", listenAddress)
+	
 
 	http.HandleFunc("/", incidentHandler())
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(listenAddress, nil)
 }
 
