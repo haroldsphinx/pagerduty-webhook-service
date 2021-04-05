@@ -6,14 +6,16 @@ import (
 	"log"
 	"github.com/namsral/flag"
 	"strings"
-	webhook "github.com/pagerduty-webhook-service"
+	"os"
+	"fmt"
+	webhook "github.com/pagerduty-webhook-service/listeners"
 )
 
 var (
 	flagSet       = flag.NewFlagSetWithEnvPrefix(os.Args[0], "GWP", 0)
 	listenAddress = flagSet.String("listen", ":8080", "Listening port for the webhook service")
 	secret        = flagSet.String("secret", "", "Secret of the webhook API")
-	provider      = flagSet.String("provider", "pager-duty")
+	provider      = flagSet.String("provider", "pagerduty", "Provider Name")
 	allowedPaths  = flagSet.String("allowedPaths", "", "Comma separated list of the paths we want to accept from the client")
 )
 
