@@ -1,9 +1,6 @@
 package providers
 
-import (
-	"errors"
-	"strings"
-)
+
 
 const (
 	IncidentTrigger       = "incident.trigger"       // IncidentTrigger is sent when an incident is newly created/triggered
@@ -21,7 +18,6 @@ type Event string
 type Provider interface {
 	GetHeaderKeys() []string
 	Validate(hook Hook) bool
-	GetOwner(hook Hook) string
 	GetProviderName() string
 }
 
